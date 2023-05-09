@@ -117,8 +117,8 @@ int superv_err(int** superv_mapping,int* mapping,int superv_tot,int m,int n) {
 
     int i=0;
     int correct=0;
-    for (i=0;i<m;i++){
-        correct+=superv_mapping[i][mapping[i]];
+    for (i=0;i<n;i++){
+        correct+=superv_mapping[mapping[i]][i];
     }
     return superv_tot-correct ;
 }
