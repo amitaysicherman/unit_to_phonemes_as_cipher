@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     text_matrix e_matrix(phonemes_bi_gram_file, phonemes_freqs_file, n_phonemes);
     homophonic_cipher_matrix d_matrix(e_matrix, code_bi_gram_file, code_freqs_file, phonemes_code_counts, n_code + 1, n_random); // texts/super_count.txt
     d_matrix.solve_cipher();
-    printf("\n");
+    printf("END\n");
 
     return 0;
 }
