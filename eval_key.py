@@ -23,7 +23,11 @@ for file_name in os.listdir(base_scores):
     with open(f'{base_scores}/{file_name}') as f:
         mapping=f.read().strip().split(",")
     correct=0
+    
     for p,c in zip(phonemes,code):
+        if c not in mapping:
+            print("skip ",c)
+            continue
         if int(mapping[c])==p:
             correct+=1
     print(file_name,' Phonemes Error:',1-correct/len(phonemes))
