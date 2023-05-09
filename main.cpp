@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     text_matrix e_matrix("texts/phonemes_bi_grams.csv","texts/phonemes_counts.txt",39);
     std::cout<<"e_matrix created\n";
 
-    homophonic_cipher_matrix d_matrix(e_matrix,"texts/code_bi_grams.csv","texts/code_counts.txt","texts/super_count.txt",101,n_random); //texts/freq_count.txt
+    homophonic_cipher_matrix d_matrix(e_matrix,"texts/code_bi_grams.csv","texts/code_counts.txt","texts/freq_count.txt",101,n_random); //texts/super_count.txt
     d_matrix.solve_cipher();
     printf("\n");
 
