@@ -27,7 +27,7 @@ for file_name in os.listdir(base_scores):
     for p,c in zip(phonemes,code):
         if c not in mapping:
             print("skip ",c)
-            continue
+            break
         if int(mapping[c])==p:
             correct+=1
     print(file_name,' Phonemes Error:',1-correct/len(phonemes))
