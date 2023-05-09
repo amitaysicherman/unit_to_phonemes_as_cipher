@@ -20,8 +20,6 @@ code = get_uncode_values("code")
 
 base_scores="scores"
 for file_name in os.listdir(base_scores):
-    if  not file_name.startswith("best_key"):
-        continue
     with open(f'{base_scores}/{file_name}') as f:
         mapping=f.read().strip().split(",")
     correct=0
