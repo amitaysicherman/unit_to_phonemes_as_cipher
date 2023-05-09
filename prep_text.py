@@ -28,19 +28,18 @@ def prep_data(name):
     
     bi_grams.astype(str).to_csv(f"texts/{name}_bi_grams.csv",index=False,header=False)
     return counts
-p_counts=prep_data("phonemes")
-c_counts=prep_data("code")
 
-
-p_counts = np.round(p_counts/p_counts.sum() * c_counts.shape[0])
-p_counts = np.clip(p_counts, 1, None)
-diff = c_counts.shape[0] - p_counts.sum()
-if diff < 0:
-    p_counts[np.argsort(p_counts)[::-1][:int(-diff)]] -= 1
-else:
-    p_counts[np.argsort(p_counts)[::-1][:int(diff)]] += 1
-p_counts = p_counts.astype(int)
-assert p_counts.sum() == c_counts.shape[0]
-with open("texts/freq_count.txt", "w") as f:
-    f.write(",".join(p_counts.astype(str)))
-
+for s in [50,100,200,500,1000]:
+    p_counts=prep_data("phonemes")
+    c_counts=prep_data(f"code{s}")
+    p_counts = np.round(p_counts/p_counts.sum() * c_counts.shape[0])
+    p_counts = np.clip(p_counts, 1, None)
+    diff = c_counts.shape[0] - p_counts.sum()
+    if diff < 0:
+        p_counts[np.argsort(p_counts)[::-1][:int(-diff)]] -= 1
+    else:
+        p_counts[np.argsort(p_counts)[::-1][:int(diff)]] += 1
+    p_counts = p_counts.astype(int)
+    assert p_counts.sum() == c_counts.shape[0]
+    with open(f"texts/freq_count_{s}.txt", "w") as f:
+        f.write(",".join(p_counts.astype(str)))

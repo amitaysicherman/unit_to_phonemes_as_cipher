@@ -89,7 +89,7 @@ void print_1d(int* matrix, int N) {
 void save_results(int score,int* arr,int n){
     
     std::stringstream ss;
-    ss << "scores/best_key_" << score << ".txt";
+    ss << "scores/" <<n<<"_"<<score << ".txt";
     std::string file_name = ss.str();
     std::ofstream output(file_name);
     // write the contents of the array to the file, separated by commas
