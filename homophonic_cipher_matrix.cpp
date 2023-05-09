@@ -38,13 +38,14 @@ homophonic_cipher_matrix::homophonic_cipher_matrix(text_matrix &text_matrix, std
     }
     freq_distribution = read_1d(freq_count_file, e_matrix.n_count);
     n_random = n_random_;
-    superv_mapping = read_2d(file_bigram, e_matrix.n_count,code_count);
+    superv_mapping = read_2d(superv_file_, e_matrix.n_count,code_count);
     superv_tot=0;
     for (i=0; i<e_matrix.n_count;i++){
         for (int j=0;j<code_count;j++){
             superv_tot+=superv_mapping[i][j];
         }
     }
+    std::cout<<superv_tot<<std::endl;
 }
 
 homophonic_cipher_matrix::~homophonic_cipher_matrix()
@@ -81,7 +82,7 @@ void homophonic_cipher_matrix::solve_cipher()
     }
     std::cout << "\n";
 
-    score_least = 100000;
+    score_least = 1000000;
 
     int a, b, j, k;
     int score_flag = 0;

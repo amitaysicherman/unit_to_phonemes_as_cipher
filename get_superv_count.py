@@ -57,3 +57,5 @@ for s in [50,100,200,500,1000]:
     print("Superv accuracy",1-correct/len(phonemes))
 
     pd.DataFrame(full_res).astype(int).astype(str).to_csv(f'texts/code{s}_superv.csv',header=False,index=False)
+
+    print(full_res.sum())
