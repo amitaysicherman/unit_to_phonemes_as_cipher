@@ -17,7 +17,7 @@
 #include "utils.h"
 #include <algorithm>
 
-homophonic_cipher_matrix::homophonic_cipher_matrix(text_matrix &text_matrix, std::string file_bigram, std::string file_freqs, std::string freq_count_file, int count,int n_random_) : e_matrix(text_matrix)
+homophonic_cipher_matrix::homophonic_cipher_matrix(text_matrix &text_matrix, std::string file_bigram, std::string file_freqs, std::string freq_count_file, int count, int n_random_,std::string superv_file_) : e_matrix(text_matrix)
 {
     e_matrix = text_matrix;
     code_count = count;
@@ -38,6 +38,13 @@ homophonic_cipher_matrix::homophonic_cipher_matrix(text_matrix &text_matrix, std
     }
     freq_distribution = read_1d(freq_count_file, e_matrix.n_count);
     n_random = n_random_;
+    superv_mapping = read_2d(file_bigram, e_matrix.n_count,code_count);
+    superv_tot=0;
+    for (i=0; i<e_matrix.n_count;i++){
+        for (int j=0;j<code_count;j++){
+            superv_tot+=superv_mapping[i][j];
+        }
+    }
 }
 
 homophonic_cipher_matrix::~homophonic_cipher_matrix()
@@ -147,7 +154,6 @@ void homophonic_cipher_matrix::solve_cipher()
                         curr_best_key[k] = putative_key[k];
                     }
 
- 
                     save_results(score_least, curr_best_key, code_count);
                 }
                 else
@@ -195,7 +201,7 @@ int homophonic_cipher_matrix::random_initial_key()
 {
     int i;
     int j;
-    int k ;
+    int k;
     int score_least;
     int score;
     int *best_putative_key = NULL;
@@ -210,7 +216,7 @@ int homophonic_cipher_matrix::random_initial_key()
     get_random_key();
 
     score_least = inner_hill_climb(putative_key);
-
+    
     std::cout << "Initial putative key score: " << score_least << "\n";
 
     best_putative_key = new int[code_count];
@@ -378,7 +384,6 @@ int homophonic_cipher_matrix::inner_hill_climb(int *curr_putative_key)
     // Update the matrix_d with the putative key
     apply_putative_key(matrix_d, curr_putative_key);
 
-
     int **previous_matrix_d = new int *[e_matrix.n_count];
     for (i = 0; i < e_matrix.n_count; i++)
     {
@@ -409,7 +414,6 @@ int homophonic_cipher_matrix::inner_hill_climb(int *curr_putative_key)
     score_least = score;
 
     // Modify the putative keys in nested for loops
-
 
     int a;
     int b;
@@ -459,10 +463,11 @@ int homophonic_cipher_matrix::inner_hill_climb(int *curr_putative_key)
                     matrix_d[temp_putative_key[i]][k] = previous_matrix_d[temp_putative_key[i]][k];
                     matrix_d[temp_putative_key[j]][k] = previous_matrix_d[temp_putative_key[j]][k];
                 }
-
             }
         }
     }
+    
+    int superv_score=superv_err(superv_mapping,curr_putative_key,superv_tot,e_matrix.n_count,code_count);
 
     delete[] temp_putative_key; // delete temp putative_key
     for (int i = 0; i < e_matrix.n_count; i++)
@@ -476,5 +481,7 @@ int homophonic_cipher_matrix::inner_hill_climb(int *curr_putative_key)
         delete[] matrix_d[i];
     }
     delete[] matrix_d;
-    return score_least;
+    return superv_score;
+    
+    // return score_least;
 }

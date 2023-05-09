@@ -10,9 +10,12 @@ class homophonic_cipher_matrix {
     int* code_freqs;
     int* freq_distribution;
     int n_random;
+    int** superv_mapping;
+    int superv_tot;
+    
     
  public:
-    homophonic_cipher_matrix(text_matrix &text_matrix,std::string file_bigram,std::string file_freqs,std::string freq_count_file,int count,int n_random_);
+    homophonic_cipher_matrix(text_matrix &text_matrix,std::string file_bigram,std::string file_freqs,std::string freq_count_file,int count,int n_random_,std::string superv_file);
     ~homophonic_cipher_matrix();
     void get_random_key();
     void modify_putative_key(int** matrix_d, int temp_putative_key[], int swap_i, int swap_j);

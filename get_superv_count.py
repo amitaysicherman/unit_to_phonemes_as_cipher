@@ -40,15 +40,20 @@ for s in [50,100,200,500,1000]:
 
 
     code_bi_grams=pd.read_csv(f"texts/code{s}_bi_grams.csv",header=None).values.astype(int)
-
+    
     code_to_phonemes=np.zeros_like(phonemes_bi_grams)
     for i in range(len(code_uniqe)):
         for j in range(len(code_bi_grams)):
             code_to_phonemes[int(superv_map[i]),int(superv_map[j])]+=code_bi_grams[i,j]
     print("Superv score",np.abs(code_to_phonemes-phonemes_bi_grams).sum())
 
+    
+    full_res=np.zeros((phonemes_uniqe.size,code_uniqe.size))
     correct=0
     for p,c in zip(phonemes,code):
+        full_res[p,c]+=1
         if int(superv_map[c])==p:
             correct+=1
     print("Superv accuracy",1-correct/len(phonemes))
+
+    pd.DataFrame(full_res).astype(int).astype(str).to_csv(f'texts/code{s}_superv.csv',header=False,index=False)

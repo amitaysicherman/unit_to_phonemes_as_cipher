@@ -19,7 +19,6 @@
 
 int main(int argc, char *argv[])
 {
-
     int n_random = 10;
     int n_code = 100;
     // check if the command-line argument for n_random is provided
@@ -39,7 +38,8 @@ int main(int argc, char *argv[])
     std::cout << "n_code = " << n_code << std::endl;
 
     std::string phonemes_bi_gram_file = "texts/phonemes_bi_grams.csv";
-    std::string phonemes_freqs_file = "texts/phonemes_counts.txt";;
+    std::string phonemes_freqs_file = "texts/phonemes_counts.txt";
+    ;
     int n_phonemes = 39;
 
     std::stringstream s1;
@@ -53,8 +53,13 @@ int main(int argc, char *argv[])
     s3 << "texts/freq_count_" << n_code << ".txt";
     std::string phonemes_code_counts = s3.str();
 
+
+    std::stringstream s4;
+    s4 << "texts/code" << n_code << "_superv.csv";
+    std::string superv_file = s4.str();
+
     text_matrix e_matrix(phonemes_bi_gram_file, phonemes_freqs_file, n_phonemes);
-    homophonic_cipher_matrix d_matrix(e_matrix, code_bi_gram_file, code_freqs_file, phonemes_code_counts, n_code + 1, n_random); // texts/super_count.txt
+    homophonic_cipher_matrix d_matrix(e_matrix, code_bi_gram_file, code_freqs_file, phonemes_code_counts, n_code + 1, n_random, superv_file); // texts/super_count.txt
     d_matrix.solve_cipher();
     printf("END\n");
 
