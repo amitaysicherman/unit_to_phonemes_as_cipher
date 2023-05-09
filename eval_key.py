@@ -15,19 +15,23 @@ def get_uncode_values(name):
     return np.array(symbols)
 
 
+
+
 phonemes = get_uncode_values("phonemes")
-code = get_uncode_values("code")
 
 base_scores="scores"
 for file_name in os.listdir(base_scores):
+
     with open(f'{base_scores}/{file_name}') as f:
         mapping=f.read().strip().split(",")
     correct=0
-    
+    if file_name.startswith("best"):
+        n=""
+    else:
+        n=int(file_name.split("_")[0])-1
+    code = get_uncode_values(f"code{n}")
+
     for p,c in zip(phonemes,code):
-        if c not in mapping:
-            print("skip ",c)
-            break
         if int(mapping[c])==p:
             correct+=1
     print(file_name,' Phonemes Error:',1-correct/len(phonemes))
